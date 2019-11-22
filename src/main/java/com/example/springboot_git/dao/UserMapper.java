@@ -21,12 +21,12 @@ public interface UserMapper {
     @Select("select id,user_name,sex,age,profession,tel from user where id=#{id}")
     User selUserById(int id);
 
-    @Insert("insert into user values(#{id},#{user_name},#{sex},#{age},#{profession},#{tel})")
+    @Update("insert into user values(null,#{user_name},#{sex},#{age},#{profession},#{tel})")
     int addUser(User user);
 
     @Update("delete from user where id=#{id}")
     int delUser(int id);
 
-    @Update("update user set user_name=#{user_name},sex=#{sex},age=#{age},profession=#{profession},tel=#{tel}")
+    @Update("update user set user_name=#{user_name},sex=#{sex},age=#{age},profession=#{profession},tel=#{tel} where id=#{id}")
     int updUser(User user);
 }

@@ -1,0 +1,178 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    &lt;!&ndash; 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ &ndash;&gt;-->
+<!--    <title>Bootstrap 101 Template</title>-->
+
+<!--    &lt;!&ndash; Bootstrap &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">-->
+<!--    <link href="/static/bootstrap/css/bootstrap-dialog.css" rel="stylesheet">-->
+
+<!--    &lt;!&ndash; HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 &ndash;&gt;-->
+<!--    &lt;!&ndash; 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 &ndash;&gt;-->
+<!--    &lt;!&ndash;[if lt IE 9]>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>-->
+<!--    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>-->
+<!--    <![endif]&ndash;&gt;-->
+<!--    &lt;!&ndash; jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) &ndash;&gt;-->
+<!--    <script src="/static/bootstrap/jquery/jquery.min.js"></script>-->
+<!--    &lt;!&ndash; 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 &ndash;&gt;-->
+<!--    <script src="/static/bootstrap/js/bootstrap.min.js"></script>-->
+<!--    <script src="/static/dist/js/bootstrap-dialog.js"></script>-->
+
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container-fluid">-->
+
+<!--    <div class="row">-->
+<!--        <div class="col-md-12">-->
+<!--            <div class="box">-->
+<!--                <div class="box-header with-border">-->
+<!--                    <h3 class="box-title">车辆管理</h3>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-->
+<!--                    <input type="button" class="btn-info" id="add1" value="新增车型"/>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; /.box-header &ndash;&gt;-->
+<!--                <div class="box-body">-->
+<!--                    <table class="table table-bordered">-->
+<!--                        <tr>-->
+<!--                            <th>编号</th>-->
+<!--                            <th>车型</th>-->
+<!--                            <th>载重</th>-->
+<!--                            <th>长*宽*高</th>-->
+<!--                            <th>载货体积</th>-->
+<!--                            <th>图片</th>-->
+<!--                            <th>起步距离</th>-->
+<!--                            <th>起步价</th>-->
+<!--                            <th>超里程费</th>-->
+<!--                            <th>修改</th>-->
+<!--                            <th>删除</th>-->
+<!--                        </tr>-->
+<!--                        <tr th:each="carType: ${carTypes}">-->
+<!--                            <td th:text="${carType.cid}"></td>-->
+<!--                            <td th:text="${carType.type}"></td>-->
+<!--                            <td th:text="${carType.weight}"></td>-->
+<!--                            <td th:text="${carType.area}"></td>-->
+<!--                            <td th:text="${carType.tiji}"></td>-->
+
+<!--                            <td>-->
+<!--                                <div th:if="${#strings.isEmpty(carType.photo)}">-->
+<!--                                        暂无图片-->
+<!--                                </div>-->
+<!--                                <div th:unless="${#strings.isEmpty(carType.photo)}">-->
+<!--                                    <img th:src="${carType.photo}" width="50"/>-->
+<!--                                </div>-->
+<!--                            </td>-->
+
+
+<!--                            <td th:text="${carType.distance}"></td>-->
+<!--                            <td th:text="${carType.price}"></td>-->
+<!--                            <td th:text="${carType.outt}"></td>-->
+
+
+<!--                            <td><a class="btn btn-default" th:href="@{/getById(cid=${carType.cid})}">修改车辆</a> </td>-->
+
+<!--                           &lt;!&ndash; <td>-->
+<!--                                <a class="btn btn-default"-->
+<!--                                th:data-cid="${carType.cid}"-->
+<!--                                onclick="updateCar(this.getAttribute('data-cid'))"-->
+<!--                                role="button">修改车辆</a>-->
+<!--                            </td>-->
+<!--&ndash;&gt;-->
+
+<!--                            <td><a class="btn btn-default" th:href="@{/delectCar(cid=${carType.cid})}">删除车辆</a></td>-->
+<!--                        </tr>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+
+<!--                </div>-->
+<!--                &lt;!&ndash; /.box-body &ndash;&gt;-->
+<!--                <div class="box-footer clearfix">-->
+<!--                    <ul class="pagination pagination-sm no-margin pull-right">-->
+<!--                        <li><a href="#">&laquo;</a></li>-->
+<!--                        <li><a href="#">&raquo;</a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </div>-->
+
+
+<!--</div>-->
+
+<!--<script>-->
+<!--    function deleteC(cid) {-->
+<!--        $.post("delectCar", {-->
+<!--            cid: cid-->
+<!--        }, function (data) {-->
+<!--            if (data.success) {-->
+<!--                window.location.reload("getAllCar");-->
+<!--            }-->
+<!--        })-->
+
+<!--    }-->
+
+
+<!--    var dialog;-->
+
+<!--    $("#add1").click(function () {-->
+<!--        dialog = new BootstrapDialog({-->
+<!--            title: '添加',-->
+<!--            message: function (dialog) {-->
+<!--                var $message = $('<div></div>');-->
+<!--                var pageToLoad = dialog.getData('pageToLoad');-->
+<!--                $message.load(pageToLoad);-->
+<!--                return $message;-->
+<!--            },-->
+<!--            size: BootstrapDialog.SIZE_WIDE,-->
+<!--            cssClass: "fade",-->
+<!--            closeable: true,-->
+<!--            data: {-->
+<!--                'pageToLoad': 'pageJumps1'-->
+<!--            }-->
+<!--        });-->
+<!--        //打开-->
+<!--        dialog.open();-->
+<!--    });-->
+
+<!--    $("#add1").click(function () {-->
+<!--        dialog = new BootstrapDialog({-->
+<!--            title: '修改',-->
+<!--            message: function (dialog) {-->
+<!--                var $message = $('<div></div>');-->
+<!--                var pageToLoad = dialog.getData('pageToLoad');-->
+<!--                $message.load(pageToLoad);-->
+<!--                return $message;-->
+<!--            },-->
+<!--            size: BootstrapDialog.SIZE_WIDE,-->
+<!--            cssClass: "fade",-->
+<!--            closeable: true,-->
+<!--            data: {-->
+<!--                'pageToLoad': 'updateCar2?carType.cid'+carType.cid-->
+<!--            }-->
+<!--        });-->
+<!--        //打开-->
+<!--        dialog.open();-->
+<!--    });-->
+
+
+
+<!--    function cloaseDialog() {-->
+<!--        dialog.close();-->
+<!--    }-->
+
+<!--    function closeDialogRefresh() {-->
+<!--        dialog.close();-->
+<!--        //页面重新加载-->
+<!--        window.location.reload("getAllCar");-->
+<!--    }-->
+
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

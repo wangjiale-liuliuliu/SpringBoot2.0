@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,6 +32,7 @@ public class UserController {
     public String showUser(Model model){
         List<User> users = userService.selAll();
         model.addAttribute("users",users);
+        System.out.println(users);
         return "user/user_list";
     }
 
@@ -38,33 +42,45 @@ public class UserController {
         return userService.selUserById(id).toString();
     }
 
-    @RequestMapping("goAdd")
+    @RequestMapping("/goAdd")
     public String goAdd(){
         return "user/user_add";
     }
     @RequestMapping("/addUser")
-    public String addUser(User user){
+    public String addUser( User user, HttpServletResponse response){
+        System.out.println(user);
         userService.addUser(user);
-        return "forward:showUser";
+        try {
+            response.sendRedirect("/showUser");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "index";
     }
 
     @RequestMapping("/delUser")
-    public String delUser(@PathVariable int id){
+    public String delUser(int id){
         userService.delUser(id);
-        return "forward:showUser";
+        return "forward:/showUser";
     }
 
-    @RequestMapping("/goUpd")
-    public String goUpd(Model model, int id){
-        User user = userService.selUserById(id);
+    @RequestMapping("/goUpd/{id}")
+    public String goUpd(Model model, @PathVariable String id){
+        int intId = Integer.parseInt(id);
+        User user = userService.selUserById(intId);
         model.addAttribute("user",user);
         return "user/user_upd";
     }
 
     @RequestMapping("/updUser")
-    public String updUser(User user){
+    public String updUser(User user,HttpServletResponse response){
          userService.updUser(user);
-        return "forward:showUser";
+        try {
+            response.sendRedirect("/showUser");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "forward:/showUser";
     }
 
 }

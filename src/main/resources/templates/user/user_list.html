@@ -2,17 +2,36 @@
 <head>
     <meta charset="UTF-8">
     <title>用户展示</title>
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="../../static/bootstrap/jquery/dist/jquery.js"></script>
+    <script src="/static/bootstrap/jquery/dist/jquery.js"></script>
 
     <!-- Bootstrap -->
-    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="/static/dist/js/bootstrap-dialog.css" rel="stylesheet">
+
+    <!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+    <!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+    <script src="/static/bootstrap/js/bootstrap.js"></script>
+    <script src="/static/dist/js/bootstrap-dialog.js"></script>
+
 </head>
 <body>
 <div class="row">
     <div class="col-md-12">
         <div class="box">
             <!-- /.box-header -->
+            <input type="button" class="btn-info" id="add" value="新增用户"/>
+
             <div class="box-body">
                 <table class="table table-bordered">
                     <tr>
@@ -22,17 +41,20 @@
                         <th>年龄</th>
                         <th>职业</th>
                         <th>电话</th>
+                        <th>操作</th>
                     </tr>
                     <tr th:each="user:${users}">
                         <td th:text="${user.id}"></td>
-                        <td th:text="${user.user_name}"></td>
-                        <td th:text="${user.sex}"></td>
-                        <td th:text="${user.age}"></td>
-                        <td th:text="${user.profession}"></td>
-                        <td th:text="${user.tel}"></td>
+                        <td th:text="${user.getUser_name()}"></td>
+                        <td th:text="${user.getSex()}"></td>
+                        <td th:text="${user.getAge()}"></td>
+                        <td th:text="${user.getProfession()}"></td>
+                        <td th:text="${user.getTel()}"></td>
                         <td>
-                            <a class="btn btn-info" th:href="@{/goEdit(id=${user.id})}" role="button">编辑</a>
-                            <a class="btn btn-warning" th:href="@{/deleteAppUser(id=${user.id})}"  role="button">删除</a>
+                            <button  th:onclick="'javascript:goEdit('+${user.id}+')'" class="btn btn-info">编辑</button>
+                            <button  th:onclick="'javascript:deleteAppUser('+${user.id}+')'" class="btn btn-warning">删除</button>
+<!--                            <a class="btn btn-info" th:href="@{'/goUpd/'+ ${user.id}}" role="button">编辑</a>-->
+<!--                            <a class="btn btn-warning" th:href="@{'/delUser/'+ ${user.id}}"  role="button">删除</a>-->
                         </td>
                     </tr>
                 </table>
@@ -42,13 +64,15 @@
 </div>
 
 </body>
+    <!--dialog-->
+    <script src="/static/dist/js/bootstrap-dialog.js" ></script>
 <script>
     function deleteAppUser(id) {
-        $.post("delUser", {
+        $.post("/delUser", {
             id: id
         }, function (data) {
             if (data) {
-                window.location.reload("showUser");
+                window.location.reload("/showUser");
             }
         })
 
@@ -73,7 +97,7 @@
             cssClass: "fade",
             closeable: true,
             data: {
-                'pageToLoad': 'goUpd?id=' + id
+                'pageToLoad': '/goUpd/' + id
             }
         });
         //打开
@@ -95,7 +119,7 @@
             cssClass: "fade",
             closeable: true,
             data: {
-                'pageToLoad': 'goAdd'
+                'pageToLoad': '/goAdd'
             }
         });
         dialog.open();
@@ -108,7 +132,7 @@
     function closeDialogRefresh() {
         dialog.close();
         //页面重新加载
-        window.location.reload("showUser");
+        window.location.reload("/showUser");
     }
 
 </script>
