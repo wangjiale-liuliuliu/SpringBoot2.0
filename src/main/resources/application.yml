@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.31.29:3306/ssm01?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 10
+    maxActive : 20
+
+mybatis:
+   mapper-locations: classpath:mapper/*.xml
+   type-aliases-package: com.example.domain
+
+#打印mapper日志信息  mapper所在的包  调试级别 能够打印出语句
+logging:
+  level:
+    com.example.dao: debug
