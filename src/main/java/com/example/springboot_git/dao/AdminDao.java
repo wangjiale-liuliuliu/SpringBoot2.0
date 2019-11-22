@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface AdminDao {
-    @Select("select * from admin where username=#{user_name}")
+    @Select("select * from admin where user_name=#{user_name}")
     Admin findByName(String user_name);
 }
