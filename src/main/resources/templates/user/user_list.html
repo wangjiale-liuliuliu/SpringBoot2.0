@@ -1,0 +1,115 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户展示</title>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="../../static/bootstrap/jquery/dist/jquery.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="../../static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>序号</th>
+                        <th>名字</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>职业</th>
+                        <th>电话</th>
+                    </tr>
+                    <tr th:each="user:${users}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.user_name}"></td>
+                        <td th:text="${user.sex}"></td>
+                        <td th:text="${user.age}"></td>
+                        <td th:text="${user.profession}"></td>
+                        <td th:text="${user.tel}"></td>
+                        <td>
+                            <a class="btn btn-info" th:href="@{/goEdit(id=${user.id})}" role="button">编辑</a>
+                            <a class="btn btn-warning" th:href="@{/deleteAppUser(id=${user.id})}"  role="button">删除</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    function deleteAppUser(id) {
+        $.post("delUser", {
+            id: id
+        }, function (data) {
+            if (data) {
+                window.location.reload("showUser");
+            }
+        })
+
+    }
+    // 对话框
+    var dialog;
+    function goEdit(id) {
+        dialog = new BootstrapDialog({
+            title: '修改用户页面',
+            //设置dialog展示的页面
+            message: function (dialog) {
+                //dom操作 使用jquery操作前端页面 文档对象模型 js 操作对象文档模型，就是操作了页面。
+                var $message = $('<div></div>');
+                //一个url地址 让div加载一个页面地址
+                var pageToLoad = dialog.getData('pageToLoad');
+                //让div加载一个页面。 页面是展示在dialog中的
+                $message.load(pageToLoad);
+                return $message;
+            },
+            //大小
+            size: BootstrapDialog.SIZE_WIDE,
+            cssClass: "fade",
+            closeable: true,
+            data: {
+                'pageToLoad': 'goUpd?id=' + id
+            }
+        });
+        //打开
+        dialog.open();
+    }
+
+
+
+    $("#add").click(function () {
+        dialog = new BootstrapDialog({
+            title: '添加用户页面',
+            message: function (dialog) {
+                var $message = $('<div></div>');
+                var pageToLoad = dialog.getData('pageToLoad');
+                $message.load(pageToLoad);
+                return $message;
+            },
+            size: BootstrapDialog.SIZE_WIDE,
+            cssClass: "fade",
+            closeable: true,
+            data: {
+                'pageToLoad': 'goAdd'
+            }
+        });
+        dialog.open();
+    });
+
+    function closeDialog() {
+        dialog.close();
+    }
+
+    function closeDialogRefresh() {
+        dialog.close();
+        //页面重新加载
+        window.location.reload("showUser");
+    }
+
+</script>
+</html>

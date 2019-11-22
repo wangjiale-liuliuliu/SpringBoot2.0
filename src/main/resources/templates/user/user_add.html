@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户展示</title>
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="/static/bootstrap/jquery/dist/jquery.js"></script>
+
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            <!-- /.box-header -->
+            <a href="javascript:void(0)" onclick="addAppUser()" class="btn btn-info" role="button">提交</a>
+            <a href="javascript:void(0)" onclick="cancel()" class="btn btn-info" role="button">取消</a>
+            <div class="box-body">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>序号</th>
+                        <th>名字</th>
+                        <th>性别</th>
+                        <th>年龄</th>
+                        <th>职业</th>
+                        <th>电话</th>
+                    </tr>
+                    <tr >
+                        <td><input type="checkbox" name="all-check" class="id"></td>
+                        <td ><input type="checkbox" name="all-check" class="user_name"></td>
+                        <td ><input type="checkbox" name="all-check" class="sex"></td>
+                        <td ><input type="checkbox" name="all-check" class="age"></td>
+                        <td ><input type="checkbox" name="all-check" class="profession"></td>
+                        <td ><input type="checkbox" name="all-check" class="tel"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script>
+    function addAppUser() {
+        var id = $(".id").val();
+        var user_name = $(".user_name").val();
+        var sex = $(".sex").val();
+        var age = $(".age").val();
+        var profession = $(".profession").val();
+        var tel = $(".tel").val();
+        console.log("id"+id);
+        // console.log(nameValue);
+        $.get( "addUser",{id:id, user_name:user_name, sex :sex,age:age,
+                profession :profession,tel :tel},
+            function (data) {
+                closeDialogRefresh();
+            })}
+
+    function cancel() {
+        closeDialog();
+    }
+</script>
+</html>
